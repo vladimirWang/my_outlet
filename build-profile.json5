@@ -1,0 +1,41 @@
+{
+  "app": {
+    "signingConfigs": [
+//      {
+//        "name": "default",
+//        "type": "HarmonyOS",
+//        "material": {
+//          "certpath": "/Users/yangfan/.ohos/config/auto_debug_yunshanfu_com.example.yunshanfu_30086000741137049.cer",
+//          "storePassword": "0000001B559FAB8540616801F6F157761EA02448A2C0845D4FEDFF56C93C8EB23E2468CDC87EAF2E9F9DE2",
+//          "keyAlias": "debugKey",
+//          "keyPassword": "0000001B79E54E9C9D0FC9739E59DF5649E94303B1092B0433F7C09AFE6F45A630E5215C8CF110F617A395",
+//          "profile": "/Users/yangfan/.ohos/config/auto_debug_yunshanfu_com.example.yunshanfu_30086000741137049.p7b",
+//          "signAlg": "SHA256withECDSA",
+//          "storeFile": "/Users/yangfan/.ohos/config/auto_debug_yunshanfu_com.example.yunshanfu_30086000741137049.p12"
+//        }
+//      }
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

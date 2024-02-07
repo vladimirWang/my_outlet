@@ -1,0 +1,18 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Login",
+    "pages/Register",
+    "pages/Welcome",
+    "pages/Card",
+    "pages/AddCard",
+    "pages/shop/ShopHome",
+    "pages/shop/ShopHome1",
+    "pages/LoginAuth",
+    "pages/Confirm",
+    "pages/OrderConfirm",
+    "pages/GoodsDetail/GoodsDetailPage",
+    "pages/Test",
+    "pages/ShopCartPage"
+  ]
+}
