@@ -33,7 +33,7 @@ struct toggleBtn {
 export default struct ScrollExample {
   scroller: Scroller = new Scroller()
   @State isAllSelected: boolean = false;
-  @State @Watch("onChange") shopCartDetails: Shop[] = []
+  @State shopCartDetails: Shop[] = []
   @State choosed: Shop[] = []
   @State units: number = 0;
   @State sum: number = 0;
