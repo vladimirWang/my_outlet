@@ -28,14 +28,16 @@ class GoodsItem {
 
 @Observed
 class Shop {
+  public isChanged: boolean;
   public business: string;
   public businessId: string;
   children?: GoodsItem[]
 
-  constructor(business, businessId, goods =[]) {
+  constructor(business, businessId, goods =[], isChanged) {
     this.business = business;
     this.businessId = businessId;
     this.children = goods;
+    this.isChanged = isChanged
   }
 }
 

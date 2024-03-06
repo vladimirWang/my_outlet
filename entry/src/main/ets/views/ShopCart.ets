@@ -6,7 +6,10 @@ import {shopCartData, shopCartData2} from '../pages/shop/mockData'
 import {add, multiply, divide, subtract } from '../util/math'
 import promptAction from '@ohos.promptAction';
 
-console.log('divide result:  ', divide(5, 2))
+@Extend(Text) function btnStyle(bgColor, ftColor) {
+  .padding({left: 10, top: 5, bottom: 5, right: 10})
+  .backgroundColor(bgColor).fontColor(ftColor)
+}
 
 @Component
 struct toggleBtn {
@@ -37,6 +40,7 @@ export default struct ScrollExample {
   @State choosed: Shop[] = []
   @State units: number = 0;
   @State sum: number = 0;
+  @State isEdit: boolean = true;
 
   // 监听选中商品操作
   onChange() {
@@ -80,7 +84,7 @@ export default struct ScrollExample {
       if (idx > -1) {
         a[idx].children.push(c)
       } else {
-        a.push(new Shop(c.business, c.businessId, [c]))
+        a.push(new Shop(c.business, c.businessId, [c], false))
       }
       return a;
     }, [])
@@ -98,6 +102,7 @@ export default struct ScrollExample {
     const groupData = this.makeGroup2(shopCartData2)
     this.shopCartDetails = groupData
     this.isAllSelected = this.calculateAllSelected(groupData)
+    this.onChange()
   }
 
   // 去确认订单页面
@@ -111,6 +116,31 @@ export default struct ScrollExample {
         units: this.units
       }
     })
+  }
+
+  handleDelete(): void {
+    const newShops = this.shopCartDetails.reduce((a, c) => {
+      const {children, ...rest} = c;
+      const notSeletedItems = children.filter((goods: GoodsItem) => !goods.selected)
+      console.log(JSON.stringify(notSeletedItems), '--seletedItems--')
+      // notSeletedItems.length === children.length
+      const newShop = new Shop(rest.business, rest.businessId, notSeletedItems, true)
+      a = a.concat(newShop)
+      // a.push()
+      return a;
+    }, [])
+    this.shopCartDetails = newShops
+    // this.shopCartDetails = []
+    // setTimeout(() => {
+    //   this.shopCartDetails = newShops
+    // }, 10)
+
+    // this.shopCartDetails.forEach((item: Shop) => {
+    //   const {children, businessId, business} = item;
+    //   // const seletedItems = children.filter((goods: GoodsItem) => !goods.selected)
+    //   // const newShop = new Shop(business, businessId, seletedItems)
+    //   // item = newShop
+    // })
   }
 
   @Builder toolBar() {
@@ -132,25 +162,30 @@ export default struct ScrollExample {
               })
             })
           })
-          Button() {
-            Text('编辑').fontColor('#aeaeae')
-          }.type(ButtonType.Normal).width(60).fontSize(14)
-          .border({style: BorderStyle.Solid, width: 1, color: '#aeaeae'})
-          .backgroundColor('white').height('100%')
         }.height(40)
-        Column() {
-          Text(`已选 ${this.units} 件`).fontSize(12)
-          Text(`合计¥ ${this.sum}`).fontSize(12).fontColor($r('app.color.dark_red'))
+        if (this.isEdit) {
+          Row() {
+            Text('移入收藏夹').btnStyle(Color.Orange, Color.White)
+            Text('删除').btnStyle($r("app.color.dark_red"), Color.White).onClick(() => {
+              this.handleDelete()
+            })
+          }
+        } else {
+          Column() {
+            Text(`已选 ${this.units} 件`).fontSize(12)
+            Text(`合计¥ ${this.sum}`).fontSize(12).fontColor($r('app.color.dark_red'))
+          }
+
+          Button('去结算')
+            .backgroundColor($r('app.color.dark_red'))
+            .type(ButtonType.Normal)
+            .width(80)
+            .fontSize(14)
+            .onClick(() => {
+              this.confirm()
+            })
         }
 
-        Button('去结算')
-          .backgroundColor($r('app.color.dark_red'))
-          .type(ButtonType.Normal)
-          .width(80)
-          .fontSize(14)
-          .onClick(() => {
-            this.confirm()
-          })
       }.width('90%').justifyContent(FlexAlign.SpaceBetween)
       .alignItems(VerticalAlign.Center)
     }.height(54)
@@ -174,11 +209,18 @@ export default struct ScrollExample {
 
   @Builder homeLayout() {
     Column({ space: 2 }) {
-      ForEach(this.shopCartDetails, (item) => {
+      ForEach(this.shopCartDetails, (item, index) => {
         ShopCartItem({item: item as Shop, updateSummary: () => {
           this.onChange();
+        }, deleteFn: (index2) => {
+          this.shopCartDetails.forEach((ite, idx) => {
+            if (index === idx) {
+
+              ite.children.splice(index2, 1)
+            }
+          })
         }}).backgroundColor('white')
-      }, item => item.businessId)
+      }, (item: Shop) => item.businessId)
     }.padding({bottom: 110})
     // .linearGradient({
     //   direction: GradientDirection.Bottom, // 渐变方向
@@ -193,6 +235,14 @@ export default struct ScrollExample {
       Scroll(this.scroller) {
         //
         Column() {
+          Row() {
+            Text('编辑').fontColor(Color.White).fontSize(20)
+              .padding({left: 10, right: 10, top: 5, bottom: 5})
+            .onClick(() => {
+              this.isEdit = !this.isEdit
+            })
+          }.justifyContent(FlexAlign.End)
+          .width('100%')
           // ForEach(this.arr, (item) => {
           //   Text(item.toString())
           //     .width('90%')
@@ -219,6 +269,6 @@ export default struct ScrollExample {
       .position({y: '100%'})
       .translate({y: -45})
     }.justifyContent(FlexAlign.Start).height('100%')
-    .backgroundColor($r('app.color.page_bgcolor'))
+    .backgroundColor($r('app.color.dark_red'))
   }
 }

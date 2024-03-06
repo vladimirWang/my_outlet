@@ -75,6 +75,12 @@ export default struct GoodsItemStruct {
                 this.handlePopup = false;
                 this.removeGoodsItem()
               }
+            },
+            secondaryButton: {
+              value: '取消',
+              action: () => {
+                this.handlePopup = false
+              }
             }
           })
         }.width('50%')

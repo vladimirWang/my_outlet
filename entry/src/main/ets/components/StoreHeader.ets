@@ -1,6 +1,6 @@
 @Component
 export default struct StoreHeader {
-  storeName: string;
+  @Prop storeName: string;
   build() {
     Row() {
       Image($r('app.media.ic_shop')).width(24).margin({right: 12})

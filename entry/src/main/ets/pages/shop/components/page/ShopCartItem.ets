@@ -10,6 +10,7 @@ export default struct ShopCartItem {
   @ObjectLink item: Shop;
 
   updateSummary: () => void;
+  deleteFn: (index2: number) => void;
 
   build() {
     Column() {
@@ -20,7 +21,8 @@ export default struct ShopCartItem {
             CheckboxGroup({ group: this.item.businessId })
               .selectedColor($r('app.color.dark_red'))
             // .selectAll(this.allSelected)
-            StoreHeader({storeName: this.item.business})
+            StoreHeader({storeName: this.item.isChanged + this.item.business})
+            // Text(this.item.isChanged + '').fontSize(20).fontColor(Color.Orange)
           }.width('95%').margin({ left: 15, top: 15 })
         }
       }
@@ -36,10 +38,29 @@ export default struct ShopCartItem {
             this.item.children = this.item.children.filter((_, idx2) => {
               return idx2 !== index2;
             });
+            // promptAction.showToast({message: index2 + ''})
+            // this.item.children.splice(index2, 1)
+            // const newGoods = new GoodsItem(
+            //   '1',
+            //   '珀莱雅官方旗舰店',
+            //   '10',
+            //   '梅西0000999',
+            //   2000,
+            //   '已售:100+',
+            //   '12G+256G',
+            //   '上海市徐汇区',
+            //   2,
+            //   'ic_home_6_1.png',
+            //   true
+            // )
+            // this.item.children.push(newGoods)
+            // this.item.children = []
+            // this.item.business = "hello world"
+            // this.deleteFn(index2)
             this.updateSummary();
           }
         })
-      }, item2 => item2.id)
+      }, (item2: GoodsItem) => item2.id)
     }
   }
 }

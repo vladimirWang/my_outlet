@@ -28,7 +28,7 @@ export const shopCartData = [
       'ic_home_6_3.png',
       true
     ),
-  ]),
+  ], false),
   new Shop('山西汾酒官方旗舰店', '2', [
     new GoodsItem(
       '2',
@@ -43,7 +43,7 @@ export const shopCartData = [
       'ic_home_6_2.png',
       true
     )
-  ])
+  ], false)
 ]
 
 export const shopCartData2 = [
